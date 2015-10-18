@@ -35,23 +35,14 @@ hist(activity_total_daily$sum.Steps
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
-Mean and Median number of steps per day
+**Mean and Median number of steps per day**
 
 ```r
-mean(activity_total_daily$sum.Steps, na.rm=TRUE)
+meanSteps <- round(mean(activity_total_daily$sum.Steps, na.rm=TRUE),2)
+medianSteps <- round(median(activity_total_daily$sum.Steps, na.rm=TRUE),2)
 ```
-
-```
-## [1] 10766.19
-```
-
-```r
-median(activity_total_daily$sum.Steps, na.rm=TRUE)
-```
-
-```
-## [1] 10765
-```
+Mean: 10766.19 steps  
+Median: 10765 steps
 
 
 ## What is the average daily activity pattern?
@@ -69,6 +60,13 @@ ggplot(data=activity_total_interval
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
+**5-minute interval with the highest average number of steps:**
+
+```r
+maxSteps <- max(activity_total_interval$avg.Steps)
+interval <- activity_total_interval$interval[activity_total_interval$avg.Steps==maxSteps]
+```
+Interval with highest average number of steps: Interval 835 (206.1698113 steps)
 
 ## Imputing missing values
 Number of missing values in the original dataset:
@@ -101,24 +99,16 @@ Recompute average daily values after imputing missing values
 activity_imp_total_daily <- ddply(activity_imputed, "date", summarise, sum.Steps = sum(steps))
 ```
 
-Mean and Median daily values
+**Mean and Median daily values**
 Notice the difference in the Median, but not the Mean daily value:
 
 ```r
-mean(activity_imp_total_daily$sum.Steps)
+meanSteps <- round(mean(activity_imp_total_daily$sum.Steps),2)
+medianSteps <- round(median(activity_imp_total_daily$sum.Steps),2)
 ```
 
-```
-## [1] 10766.19
-```
-
-```r
-median(activity_imp_total_daily$sum.Steps)
-```
-
-```
-## [1] 10766.19
-```
+Mean: 10766.19 steps  
+Median: 10766.19 steps
 
 ## Are there differences in activity patterns between weekdays and weekends?
 Create new factor variable indicating if a date is a Weekday or Weekend day
@@ -143,7 +133,7 @@ ggplot(data=activity_imp_avg_by_weekday_int
         facet_wrap(~weekday, ncol=1)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
 
 
 

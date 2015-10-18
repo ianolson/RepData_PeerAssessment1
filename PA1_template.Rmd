@@ -28,11 +28,13 @@ hist(activity_total_daily$sum.Steps
      )
 ```
 
-Mean and Median number of steps per day
+**Mean and Median number of steps per day**
 ```{r}
-mean(activity_total_daily$sum.Steps, na.rm=TRUE)
-median(activity_total_daily$sum.Steps, na.rm=TRUE)
+meanSteps <- round(mean(activity_total_daily$sum.Steps, na.rm=TRUE),2)
+medianSteps <- round(median(activity_total_daily$sum.Steps, na.rm=TRUE),2)
 ```
+Mean: `r as.character(meanSteps)` steps  
+Median: `r as.character(medianSteps)` steps
 
 
 ## What is the average daily activity pattern?
@@ -47,6 +49,12 @@ ggplot(data=activity_total_interval
   ggtitle("Average daily activity pattern")
 ```
 
+**5-minute interval with the highest average number of steps:**
+```{r}
+maxSteps <- max(activity_total_interval$avg.Steps)
+interval <- activity_total_interval$interval[activity_total_interval$avg.Steps==maxSteps]
+```
+Interval with highest average number of steps: Interval `r interval` (`r maxSteps` steps)
 
 ## Imputing missing values
 Number of missing values in the original dataset:
@@ -72,12 +80,15 @@ Recompute average daily values after imputing missing values
 activity_imp_total_daily <- ddply(activity_imputed, "date", summarise, sum.Steps = sum(steps))
 ```
 
-Mean and Median daily values
+**Mean and Median daily values**
 Notice the difference in the Median, but not the Mean daily value:
 ```{r}
-mean(activity_imp_total_daily$sum.Steps)
-median(activity_imp_total_daily$sum.Steps)
+meanSteps <- round(mean(activity_imp_total_daily$sum.Steps),2)
+medianSteps <- round(median(activity_imp_total_daily$sum.Steps),2)
 ```
+
+Mean: `r as.character(meanSteps)` steps  
+Median: `r as.character(medianSteps)` steps
 
 ## Are there differences in activity patterns between weekdays and weekends?
 Create new factor variable indicating if a date is a Weekday or Weekend day
